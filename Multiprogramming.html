@@ -1,0 +1,77 @@
+<!--Latex References Fixed -->
+<html>
+<head>
+<title>Multi-Programming</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+
+<h1>Multiprogramming</h1>
+
+
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+
+
+<div id="main">
+<p>
+To support multiprogramming in the system, the kernel makes use of the <em>scheduler</em> which is present in the interrupt service routine INT 0.
+</p>
+<h2>Scheduler</h2>
+<p>
+Whenever a timer interrupt occurs, the kernel temporarily halts the execution of the currently executing process and invokes INT 0.
+</p>
+<p>
+Refer [Cro96] for more details.
+Following are functionalities of the scheduler:
+<ul>
+	<li> If a process is currently running, the scheduler saves the values of all the registers into the corresponding fields in the PCB of that process.
+	<li> The scheduler scans the ready list starting from the current PID and checks for the presence of a process other than the INIT process. If one such process is found, the PID is updated with the index of this entry in the ready list. If no such process is found, then the PID is set to the index of the INIT process in the ready list. Then all the registers of the machine are initialised with their corresponding values obtained from the PCB of the process specified by this PID.
+	<li> The process switches from <i>Kernel mode</i> to <i>User mode</i>.
+</ul>
+</p>
+
+
+<div id="nav3"><div id="prev"><a href="./FileSystemCalls.html">Prev</a></div>
+<div id="next"><a href="./ProcessSystemCall.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

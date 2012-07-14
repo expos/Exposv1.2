@@ -1,0 +1,116 @@
+<!--Latex References Fixed -->
+
+<html>
+<head>
+<title>Instructions</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+<h1>Instructions</h1>
+
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+
+
+<div id="main">
+<h2>Introduction</h2>
+<p>
+All instructions in the SIM architecture are present in the ESIM architecture as well. The additional instructions provided by the ESIM architecture can be classified into <em>privileged</em> and <em>unprivileged</em> instructions. Refer to the <a href="http://www.athena.nitc.ac.in/~kmurali/Compiler/sim.html">SIM manual </a> for the  instruction set and addressing modes).
+</p>
+<h2>Processor Modes</h2>
+<p>
+The ESIM architecture is interrupt driven and uses a single processor. There are two modes of operation, the user mode and the kernel mode.
+<ul>
+	<li><b>User mode :</b> All unprivileged instructions can be executed in this mode. 
+	<li><b>Kernel mode :</b> Both privileged and unprivileged instructions can be executed in this mode. Initially, the machine starts in kernel mode.
+</ul>
+
+The processor comes to know about the mode in which the system is running by looking at the value in the IP register.
+</p>
+<h2>Classification</h2>
+	<h3>Unprivileged Instructions</h3>
+	<p>
+	All the instructions in the SIM architecture except the HALT instruction constitute the unprivileged instructions. In addition to that, we have five more instructions in the ESIM architecture, one interrupt service instruction and four instructions for string operations. They are:
+	<ul>
+		<li><tt>INT</tt> 
+		<div>Syntax : INT <em>no</em></div>
+		<p>
+		This instruction generates an interrupt to the kernel with <em>no</em> as a parameter. It pushes the current IP+1 value into the stack and switches the machine from <i>User mode</i> to <i>Kernel mode</i>. The address of the first instruction of the specified ISR is stored into the IP register. Execution is started at the address specified IP.
+		</p>
+		<li> <tt>SIN Rn</tt> - This instruction is used to take strings as input. The input string is stored in the data section of the program at the logical address specified by the value in Rn.
+		
+		<li><tt>SOUT Rn</tt> - This instruction prints the string stored at the logical address specified by the value in Rn.
+		<img src="./images/sout_example.png" alt="Example For SOUT">
+
+		<li><tt>STRCPY Ri Rj</tt> - This instruction copies the string stored in 
+		the data section at the logical address specified by the register Rj to 
+		the logical address specified by the register Ri.
+		<li><tt>STRCMP Ri Rj</tt> - This instruction compares the strings stored in 
+		the data section at the logical addresses specified by the registers Ri and Rj and returns a 
+		value 0 if the strings are equal and -1 otherwise. The returned value is stored in Ri.
+		</ul>
+	</p>
+	<h3>Privileged Instructions</h3>
+	<p>
+	There are <em>four</em> privileged instructions. These instructions can be executed only in kernel mode. They are:
+	<ul>
+		<li><tt>IRET</tt>
+		<div>Syntax : IRET</div>
+		<p>IRET tells the processor that the interrupt handler has finished. This instruction pops the return address of the process from the stack into the IP register and switches the machine from kernel mode to user mode.
+		</p>
+		<li><tt>LOAD</tt>
+		<div>Syntax : LOAD <em>pg_no</em> <em>block_no</em></div>
+		<p>This instruction loads the block specified by the  <em>block_no</em>, from the disk, to the page specified by the  <em>pg_no</em>, in the memory.</p>
+		
+		<li><tt>STORE</tt>
+		<div>Syntax : STORE <em>block_no</em> <em>pg_no</em></div>
+		<p>This instruction stores the page specified by the <em>pg_no</em>, from the memory, to the block specified by the <em>block_no</em>, in the disk.</p>
+		
+		<li><tt>HALT</tt>
+		<div>Syntax : HALT</div>
+		<p>This instruction causes the simulator to halt immediately.</p>
+	</ul>
+	</p>
+<div id="nav3"><div id="prev"><a href="./Process.html">Prev</a></div>
+<div id="next"><a href="./Interrupt.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

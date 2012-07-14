@@ -1,0 +1,94 @@
+<!--Latex References have been fixed -->
+
+<html>
+<head>
+<title> Registers </title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+<h1>Registers</h1>
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+<div id="main">
+
+<h2>Introduction</h2>
+
+	<p>
+	The ESIM architecture maintains <b>12</b> registers each of size 1 word.
+	<div>
+	<dfn>
+		<b>Word:&nbsp; </b> It is the  basic unit of memory. 
+	</dfn>
+	<div>
+	Each register can hold either an integer or an address of a string.
+	</p>
+
+<h2>Register Set</h2>
+	<p>
+	There are 8 <em>General Purpose Registers</em>, R0--R7, which the user programs can use directly. These are followed by another 8 <em>Kernel Registers</em>, S0--S7 which are used only by the kernel. There are an additional 4 <em>Temporary Registers</em>, T0--T3 which are used by the compiler. There are also 4 additional special purpose registers BP, IP, SP and PID which are used as Base pointer, Instruction pointer, Stack pointer and Process Identifier respectively.
+	The following table summarises the various registers and the sections where they are referred. 
+	</p>
+	<p>
+		<table>
+		<caption>Summary of the registers in ESIM architecture</caption>
+			<tr>
+			<th>Name</th> <th>Register</th> <th>Section</th>
+			<tr>
+			<td>General Purpose Registers</td> <td>R0--R7</td><td>Used by the user programs to store data during various operations.</td>
+			<tr>
+			<td>Kernel Registers</td><td>S0--S7</td><td> Used by the OS to store data during various operations.</td>
+			<tr>
+			<td>Temporary Registers</td><td>T0--T3</td><td>Used by the translator for storing intermediate data.</td>
+			<tr>
+			<td>Stack Pointer</td><td>SP </td><td></td>
+			<tr>
+			<td>Base Pointer</td><td> BP </td><td></td> 
+			<tr>
+			<td>Instruction Pointer </td><td> IP </td><td></td> 
+			<tr>
+			<td>Process Identifier</td><td>PID </td><td></td>
+		</table>
+	</p>
+<div id="nav3"><div id="prev"><a href="./MachineSpecIntro.html">Prev</a></div>
+<div id="next"><a href="./Memory.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

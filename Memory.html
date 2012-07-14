@@ -1,0 +1,184 @@
+<!--Latex References Fixed -->
+
+<html>
+<head>
+<title>Memory</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+<h1>Memory</h1>
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+<div id="main">
+
+<h2>Introduction</h2> 
+<a name="Mem">
+	<table id="mainMem">
+	<caption>Outline of the main memory</caption>
+			<tr>
+			<th>Page no</th><th>Contents</th><th>Word addr</th>
+			<tr>
+			<td>0</td><td><a href="./OSStartupCode.html#ROM">ROM code</a></td><td> 0 -- 255</td> 
+			<tr>
+			<td>1 </td><td><a href="./OSStartupCode.html#OSStartup">OS Startup code</a></td><td>256 -- 511</td> 
+			<tr>
+			<td rowspan="5"> 2 </td>
+			<td><a href="./Process.html#PageTable">Static Page Tables</a></td><td> 512 -- 559</td>
+			<tr>
+			<td><a href="#MemFreeList">Memory Free List</a></td><td>560 -- 623</td>
+			<tr>
+			<td><a href="./FileSystemCalls.html#GFT">Global File Table</a></td><td>624 -- 719</td>
+			<tr>
+			<td><a href="./Process.html#ReadyList">Ready List</a></td><td>720 -- 731</td>
+			<tr>
+			<td>Unallocated</td><td>732 -- 767</td> 
+			<tr>
+			<td rowspan="2"> 3 </td>
+			<td> <a href="./Process.html#ProcessTable">Process Table</a> </td><td> 768 -- 959</td>
+			<tr>
+			<td> Unallocated </td><td> 960 -- 1023</td>
+			<tr>
+			<td>4 </td>
+			<td rowspan="2"><a href="./FileSystem.html#FAT">File Allocation Table</a></td><td rowspan="2">1024 -- 1535</td>
+			<tr>
+			<td>5</td>
+			<tr>
+			<td>6 </td>
+			<td rowspan="2"><a href="./FileSystem.html#DiskFreeList">Disk Free List</a> </td><td rowspan="2">1536 -- 2047</td>
+			<tr>
+			<td>7 </td>
+			<tr>
+			<td>8 </td>
+			<td rowspan="3"><a href="./OSStartupCode.html#INIT">INIT process</a> </td><td rowspan="3">2048 -- 2815</td> 
+			<tr>
+			<td>9</td>
+			<tr>
+			<td>10</td>
+			<tr>
+			<td>11 -- 55</td><td>User Programs</td><td>2816 -- 14335</td>
+			<tr>
+			<td>56</td><td> <a href="./Interrupt.html#INT">INT 0</a></td><td> 14336 -- 14591</td>
+			<tr>
+			<td>57</td><td> <a href="./Interrupt.html#INT">INT 1</a> </td><td> 14592 -- 14848</td>
+			<tr>
+			<td>...</td><td>...</td><td>...</td> 
+			<tr>
+			<td>63</td><td><a href="./Interrupt.html#INT">INT 7</a></td><td>16128 -- 16383</td>  
+	</table>
+
+	<p>
+	<ul>
+		<li>The basic unit of memory in the ESIM architecture is a word.
+		<li>The machine memory can be thought of as a linear sequence of words.
+		<li>A collection of 256 contiguous words is known as a <em>page</em>.
+		<li>The total size of the memory is 64 pages or 16384 (256 x 64) words.
+		<li>Each word in the memory is identified by the <em>word address</em> in the range 0 to 16383(256 x 64 - 1). Similarly, each page in the memory is identified by the <em>page number</em> in the range 0 to 63.
+	</ul>
+	</p>
+	<p class="example">
+		The 256<sup>th</sup> word of the memory has a word address 255 and belongs to page 0. In general, the n<sup>th</sup> word has the word address (n-1), where  1 &le; n &le; 16384 and belongs to the page &lfloor; (n-1)/256 &rfloor;.
+	</p>
+	<div id="imageCaption">
+	<img src="./images/memoryAddressing.png" alt="Memory Addressing"><br/>
+	Illustration of Memory Addressing</div>
+
+<h2>Page Table</h2>
+
+	<p>
+	Before explaining the page table, we explain two well known terms:
+	<ul>
+		<li><b>Logical address :</b> It is the CPU generated address of the data. 
+		<li><b>Physical address :</b> It is the exact location of the data in the main memory.
+	</ul>
+	</p>
+	<div id="imageCaption">
+	<img src="images/paging.png" alt="Paging Model of Esim"><br/>
+	Paging Model of Esim</div>
+	<p>
+	Refer "Memory management strategies" in the book [SGG05] to know more about paging. 
+	</p>
+	<p>
+	The page table contains information relating to the actual location in the memory, i.e., the physical address, of the data specified by the logical address. Each entry of a page table contains the page number in the memory where the data specified by the logical address resides.
+	</p>
+
+<h2>Address Translation</h2>
+	<p>
+	It is the process of obtaining the physical address from the logical address. It is done by the machine in the following way. Refer [Bac86] for more details.
+
+	<ol>
+		<li>The logical address generated by the CPU is divided by the page size (256) to get the <em>logical page number</em>.
+		<li>The remainder got after performing the above division gives the <em>offset</em> within that page.
+		<li>The <em>logical page number</em> is then used to index the page table to get the corresponding <em>physical page number</em> in the memory.
+		<li>The <em>offset</em> got in step 2 is then used to refer to the word in the physical page containing the data.
+	</ol>
+	</p>
+	<div id="imageCaption">
+	<img src="./images/paging_example.png" alt="Example of paging"><br/>
+	Diagram illustrating address translation</div>
+
+	<p class="example">
+		Consider the scenario shown in figure above. Here the logical address generated is 570, so the page number is &lfloor; 570/265 &rfloor; = 2 and word address is 570 mod 256 = 58. The looked up value from the page table is 48. Thus the resultant physical address is 48x256 + 58.
+	</p>
+<a name="MemFreeList">
+<h2>Memory Free List</h2>
+
+	<ul>
+		<li> The free list of the memory consists of 64 entries. Each entry is of size one word.
+		<li> The total size of the free list is thus 64 words (64 (= no. of entries) x 1 (= size of one entry) = 64 words).
+		<li> It is present in the second 64 words of page 2 of the memory.
+		<li> Each entry of the free list contains a value of either 0 or 1 indicating whether the corresponding page in the memory is free or not respectively.
+	</ul>
+
+	<p class="example"> 
+		The following figure indicates that pages 0, 1 and 63 of the memory are not free while pages 2 and 48 are free.
+	</p>
+
+	<div id="imageCaption">
+	<img src="./images/memoryFreelist.png" alt="A sample free list of the memory"><br/>
+	A sample free list of the memory</div>
+
+	<p>The entire structure of memory is outlined at the <a href="#Mem">beginning</a></p>
+
+<div id="nav3"><div id="prev"><a href="./Registers.html">Prev</a></div>
+<div id="next"><a href="./Process.html">Next</a></div>
+</div>
+</div>
+</body>
+<html>

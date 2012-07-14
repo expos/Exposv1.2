@@ -1,0 +1,91 @@
+<!--Latex References Fixed -->
+
+<html>
+<head>
+<title>OS Startup Code</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+
+<h1>OS Startup</h1>
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+<div id="main">
+
+<a name="ROM">
+<h2>ROM Code</h2>
+	<p>
+	It is a hard coded assembly level code present in page 0 of the memory.
+	It is also known as the ROM (Read Only Memory) code since in an actual machine it is burnt in the hardware. When the machine boots up, this code is executed. This code has the basic functionality of loading block 0 of the disk (containing the OS startup code) into page 1 of the memory and to set the IP register value to 256 and start execution.
+	</p>
+<a name="OSStartUp">
+<h2>OS Startup Code Specification</h2>
+	<p>
+	When the machine boots up, the <i>Bootloader</i> code loads the <i>OS startup code</i> into the main memory. The OS startup code starts execution in the <i>Kernel mode</i>. It performs the following functions.
+	<ul>
+		<li> It loads the Interrupt Service Routines from the blocks 1--8 of the hard disk into pages 56--63 of the memory.
+		<li> It loads the FAT from blocks 11 and 12 of the hard disk into pages 4 and 5 of the memory.
+		<li> It loads the disk free list from Blocks 9 and 10 into pages 6 and 7 of the memory.
+		<li> It generates the memory free list and stores it in words 48--111 of page 2 of the memory.
+		<li> It loads the INIT process from the hard disk into the memory by performing the following steps:
+		<ul>
+			<li> Load the INIT process from blocks 14--16 of the hard disk to pages 8--10 of memory. Page 11 is allocated as the user stack.
+			<li> Update the memory free list.
+			<li> Update the ready list and PID register.
+			<li> Set the required page table entries.
+			<li> Set the values of SP, BP and IP with values 768, 768 and 0 respectively.
+		</ul>
+		<li> Switch from <i>Kernel mode</i> to <i>User mode</i>.
+	</ul>
+
+	Note: All addresses are absolute addresses in Kernel mode. 
+</p>
+<a name="INIT">
+<h2>INIT Process</h2>
+	<p>
+	The Operating System currently supports execution of only a single user program - the INIT process. Testing of the OS startup code can be done by loading the required user program as the INIT process. Modification to INIT will be done later.
+	</p>
+	
+<div id="nav3"><div id="prev"><a href="./OSIntroduction.html">Prev</a></div>
+<div id="next"><a href="./Halt.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

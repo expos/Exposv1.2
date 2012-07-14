@@ -1,0 +1,156 @@
+<!--Latex References Fixed -->
+
+<html>
+<head>
+<title>Process</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+<h1>Process</h1>
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+<div id="main">
+
+	<h2>Introduction</h2>
+	<defn>
+		<b>Process :</b> Any program written by the user is run as a process by the kernel. 
+	</defn>
+
+	<ul>
+		<li> The ESIM architecture supports a maximum of 12 processes to be run at a time.
+		<li> Each process occupies 4 pages of the memory.
+	</ul>
+
+	<h2>Process Structure</h2>
+	<p>
+	A process in the memory has the following structure.
+	<ul>
+		<li><b>Code Area :</b>These are pages of the memory that contain the actual code to be run on the machine. It occupies 2 pages of the memory. 
+		<li><b>Data Area :</b>This section consists of string data that is used in the code which cannot be stored in a register. It occupies 1 page of the memory.
+		<li><b>Stack :</b> This is the user stack used in program execution. It is used to pass arguments during function calls, storing activation record of a function etc.  It occupies 1 page of the memory and grows in the direction of increasing word address.
+		The following figure shows the process structure.
+	</ul>
+	</p>
+	<div id="imageCaption">
+	<img src="./images/process_structure.png" alt="Process Structure in memory."><br/>
+	Process Structure in memory. Arrow shows the direction of stack growth</div>
+
+<h2>Registers Associated with a Process</h2>
+	<ul>
+		<li> Every process is allotted a unique integer identifier in the range 0 to 11, known as the PID (Process Identifier) which is stored in the PID register. This register can be used as an operand in any instruction only when executing in the kernel mode. 
+		<li> The word address of the currently executing instruction is stored in the IP (Instruction Pointer) register. This register can be used as an operand in any instruction only when executing in the kernel mode.
+		<li>The base address of the user stack is stored in the BP (Base Pointer) register.
+		<li> The address of the stack top is stored in the SP (Stack Pointer) register.
+	</ul>
+	<p>
+	Each process has its own set of values for the various registers.
+	</p>
+<h2>Data Structures Associated with a Process</h2>
+	<p>
+	The following are the various data structures associated with a process. They are explained in the following subsections.
+	</p>
+<a name="ReadyList">
+	<h3>Ready List</h3>
+	<p>
+	The <i>ready list :</i> is the data structure that maintains a circular list of all the active processes. Each entry of the ready list contains a value of either 1 or 0 indicating whether the corresponding process in the memory is present in the list or not.
+	</p>
+	<h3>Process Control Block (PCB)</h3>
+	<p>
+	It contains data pertaining to the current state of the process.
+	</p>
+	<div id="imageCaption">
+	<img src="./images/pcb.png" alt="PCB"><br/>
+	Structure of Process Control Block</div>
+	<p>
+	Note that the size of each PCB (Process Control Block) is 16 words. 
+	</p>
+
+	<h3>The Page Table</h3>
+	<p>
+	The <em>page table</em> stores the exact location in the memory of the data related to a process.
+	</p>
+	<ul>
+		<li> Each process has 4 entries in the page table.
+		<ul>
+			<li> The zeroth entry corresponds to the first page of code area.
+			<li> The first entry corresponds to the second page of code area.
+			<li> The third entry corresponds to the data area.
+			<li> The fourth entry corresponds to the stack.
+		</ul>
+		<li> Each entry contains the page number where the data specified by the logical address resides in the memory..
+	</ul>
+
+<h2>Storage Details of the Data Structures</h2>
+	<p>
+		The data structures used by the processes are stored statically in the memory. Their storage details are as follows.
+	</p>
+	<img src="./images/main_memory.png" alt="Structure of main memory">
+	<img src="./images/dataStructures.png" alt="Data Structure">
+
+
+	<h3>Ready List</h3>
+	<ul>
+		<li> The ready list is located in words 209--220 of page 2 of the memory.
+		<li> The size of each ready list entry is one word.
+		<li> There are a total of 12 processes, thus accounting for the 12 words (12 x 1 word).
+		<li> All active processes have an entry 1 in the ready list corresponding to the location indexed by their respective PIDs.
+	</ul>
+<a name="PageTable">
+	<h3>Page Tables</h3>
+	<ul>
+		<li> The page tables of the 12 processes are stored in the first 48 words of page 2 of the memory.
+		<li> The size of each page table is 4 words ( 4(= no. of entries) x 1(= size of an entry)= 4 words).
+		<li> There are a total of 12 processes, thus accounting for the 48 words( 12 x 4 words).
+		<li> The page tables are indexed by multiplying the PID of a process by the size of a page table to get the starting word address of the page table of that process.
+	</ul>
+<a name="ProcessTable">
+	<h3>Process Table</h3>
+	<ul>
+		<li> The page 3 of the memory contains the process table.
+		<li> The process table contains the PCB of each of the 12 processes (Each entry occupies 16 words).
+		<li> There are a total of 12 processes, thus accounting for the 192 words (12 x 16 words).
+		<li> The process table is indexed by multiplying the PID of a process by the size of a PCB to get the starting word address of the PCB of that process.
+	</ul>
+<div id="nav3"><div id="prev"><a href="./Memory.html">Prev</a></div>
+<div id="next"><a href="./Instructions.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

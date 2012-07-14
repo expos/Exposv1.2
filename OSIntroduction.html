@@ -1,0 +1,102 @@
+<!--Latex References Fixed -->
+
+<html>
+<head>
+<title>OS Introduction</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+
+<h1>Introduction</h1>
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+<div id="main">
+
+	<p>
+	The OS provides an interface to the user to interact with the hardware. Users write programs that make use of various resources like disk, memory, processor etc. These programs are run as processes on the machine.
+
+	The system programmers use the language SP-SIL for writing the Operating System. User programs to test the various functionalities of the Operating System can be written in AP-SIL. Refer the documents <a href="./SPSIL.html">spsil</a> and <a href="./APSIL.html">apsil</a> for the complete documentation of these tools.
+
+	A detailed operating system specification was done in the works of [GDKI11] and [KAG+11]. This documentation was critically reviewed and modifications were done in many places to comply with our new design.
+	The major modifications done are the following:
+	<ul>
+		<li> Introduction of INIT process.
+		<li> Introduction of Halt() system call.
+		<li> Exception handler interrupt has been excluded due to some limitations in the design.
+		<li> The distribution of system calls were changed. This was due to the limitations in interrupt code size.
+	</ul>
+	</p>
+	<h2>Operating System Functionality</h2>
+		<p>
+		There are various functionalities associated with the operating system which are essential for the user programs to run and make use of the system resources. The functionalities and their details are explained below.
+		</p>
+		<h3>Process Management</h3>
+			<p>
+			Any program that the user wishes to execute is loaded into the memory (A program in memory is known as a process). For creating a new process,
+
+			<ul>
+				<li>The ready list is searched for an entry with value 0. The corresponding entry found is set to 1 and the index of this entry is returned as the PID of the process. If no free entry is found, an appropriate error code is returned.
+				<li> The page table for the process is initialized as follows :
+				<ol>
+					<li> The 1<sup>st</sup> entry of the page table contains the page number of the memory where the first code block of the program has been loaded.
+					<li> The 2<sup>nd</sup> entry of the page table contains the page number of the memory where the second code block of the program has been loaded.
+					<li> The 3<sup>rd</sup> entry of the page table contains the page number of the memory where the data block of the program has been loaded.
+					<li> The 4<sup>th</sup> entry of the page table contains the page number of the memory reserved for the stack.
+				</ol>
+				<li> Set the values of BP, SP and IP in the PCB as 768, 768 and 0 respectively.
+				<li> Once a process finishes its execution, the entry corresponding to it in the ready list is set to 0.
+			</ul>
+			</p>
+		<h3>Multiprogramming</h3>
+			<p>
+			The operating system allows multiple processes to be run on the machine and manages the system resources among these processes. 
+			This process of simultaneous execution of multiple processes is known as <em>multiprogramming</em>. Refer <a href="./Multiprogramming.html">here</a> to know more about multiprogramming.
+			</p>
+		<h3>System Calls</h3>
+			<p>
+			A process needs resources like disk, memory etc while executing. The OS caters to these needs of the process by providing an interface  known as the <em>system call interface</em>. Refer <a href="./FileSystemCalls.html">File System Calls</a> and <a href="./ProcessSystemCall.html">Process System Calls</a> to know more about system calls.
+			</p>
+			
+<div id="nav3"><div id="prev"><a href="./FileSystem.html">Prev</a></div>
+<div id="next"><a href="./OSStartupCode.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

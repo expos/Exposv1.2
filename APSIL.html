@@ -1,0 +1,450 @@
+<html>
+<head>
+<title>APSIL</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+
+
+<h1>APSIL</h1>
+
+
+
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+<div id="main">
+
+
+
+<h2>Introduction</h2>
+<p>
+<i>APSIL</i> or <i>Application Programmer's Simple Integer Language</i> is a simple and strongly typed programming language. The features and constructs of this language are minimal and mainly intended for testing an experimental operating system. The compiler of APSIL runs on ESIM (<i>Extended Simple Integer Machine</i>) architecture.
+</p>
+<p>
+This document briefly describes the programming constructs, syntax and semantics APSIL. The structure of APSIL is similar in some aspects to programming languages like C and Java. 
+</p>
+<p>
+A typical APSIL program is orgnaized in the following way. 
+<div class="syntax">
+Global Declarations<br/>
+...<br/>
+Function Definitions<br/>
+...<br/>
+Main Function
+</div>
+</p>
+
+
+<h2>Lexical Elements</h2>
+
+<h3>Comments and White Spaces</h3>
+<p>
+APSIL allows only line comments. Line comments start with the character sequence <b>//</b> and stop at the end of the line. 
+White spaces in the program including tabs, newline and horizontal spaces are ignored.
+</p>
+
+
+<h3>Keywords</h3>
+<p>
+The following are the reserved words in APSIL and it cannot be used as  identifiers.
+</p>
+<code>
+<table border="0">
+
+<td>read</td>  <td>write</td>  <td>if</td>    <td>then</td>    <td>else</td>    <td>endif</td> 
+<tr>
+<td>while</td>    <td>do</td>    <td>endwhile</td>   <td>break</td>  <td>continue</td>  <td>integer</td> 
+<tr>
+<td>string</td>  <td>main</td>  <td>return</td>     <td>decl</td> 		<td>enddecl</td>    <td>Create</td>  
+<tr>
+<td>Open</td>    <td>Write</td>  <td>Seek</td>   <td>Read</td>  <td>Close</td>    <td>Delete</td>    
+<tr>
+<td>Fork</td>  <td>Exec</td>  <td>Exit</td> 
+</table>
+</code>
+
+
+<h3>Operators and Delimiters</h3>
+<p>
+The following are the operators and delimiters in APSIL :
+</p>
+<table>
+
+<td>( 		 </td><td> 		) 		</td><td>		{		 </td><td>		} 		</td><td> 		[		</td><td>		 ]    </td><td>
+/		 </td><td> 		*		 </td><td> 		+ 		 </td><td> 		-  		</td><td> 		% 
+<tr>
+<td>&gt;  </td><td> 	   &lt;   </td><td>  &gt;= 	 </td><td>  &lt;=	</td><td>	    !=		</td><td>	==	  
+  </td><td> 		;	</td><td>	=  </td><td>  &&  	  </td><td>		||	</td><td>	!
+
+</table>
+
+<h3>Identifiers</h3>
+<p>
+Identifiers are names of variables and user-defined functions. Identifiers should start with an alphabet, and may contain both alphabets and digits. Special characters are not allowed in identifiers.
+</p>
+<div class="syntax">
+identifier -> (alphabet)(alphabet | digit)*
+</div>
+
+
+<h3>Literals</h3>
+<p>
+There are integer literals and string literals in APSIL. An integer literal is a sequence of digits representing an integer.
+Negative integers are represented with a negative sign preceding the sequence of digits. Any sequence of characters enclosed within double quotes (") are considered as string literals. However APSIL restricts string literals to size of atmost 16 characters including the '\0' character which is implicitly appended at the end of a string value. 
+</p>
+<p class="example">
+Examples of literals are <tt>
+ 19, -35, "Hello World"</tt>
+</p>
+
+
+<h2>Data Types</h2>
+
+<h3>Primitive Types</h3>
+<p>
+There are two primitive datatypes in APSIL. 
+<ol>
+
+<li><b>Integer</b> : An integer value can range from -32767 to +32768. An integer type variable is declared using the keyword <code>integer</code>
+<li><b>String</b> : A string type represents the set of string values. A string value can be atmost 16 characters long. String type variables is declared using the keyword <code>string</code>.
+</ol>
+</p>
+
+<h3>Arrays</h3>
+<p>
+Arrays are  sequence of elements of a single type. Arrays can be of <b>integer</b> or <b>string</b> data types.
+APSIL allows the use of single-dimensional arrays only, i.e. linear arrays. Array elements are accessed by the array name followed an index value within square brackets ( e.g. arr[10] ).
+</p>
+
+<h2>Declarations and Scope</h2>
+<p>
+Declarations should be made for  variables and functions defined in the APSIL program.
+</p>
+
+<h3>Global Variables</h3>
+<p>
+Global variables are declared in the first section of the program within a <b>decl</b> ... <b>enddecl</b> block. Global variables can be accessed from any function in the program. Global variables can be of integer, string, integer array or string array datatypes. Global variables are declared with its datatype followed by the variable name. If the variable refers to an array the size of the array must be given in square brackets. The general form of declarations is as follows 
+</p>
+<div class="syntax">
+type variable_name;
+
+type variable_name[size];
+</div>
+
+
+
+
+<h3>Function Declaration</h3>
+<p>
+For every function except the <b>main()</b> function defined in a APSIL program, there must be a declaration. All functions have global scope and is declared in the first section within  <b>decl</b> ... <b>enddecl</b> block, along with the global variables.
+</p>
+<p>
+A function declaration should specify the name of the function, the name and type of each of its arguments and the return type of the function. A function can have integer/string arguments. Parameters may be passed by value or reference. Arrays cannot be passed as arguments. If a global variable name appears as an argument, then within the scope of the function, the new declaration will be valid and global variable declaration is suppressed. Different functions may have arguments of the same name. For arguments that are passed by reference, the argument name is preceded by an ampersand(&) in the function declaration. The return type of a function must be either integer or string. The general form of declarations is as follows:
+</p>
+<div class="syntax">
+type function_name (type1 argument1,argument2,...; type2 argument1, argument2, ...;...);
+</div>
+<p class="example">
+Examples for global declarations<br/>
+
+decl<br/>
+	integer x,y,a[10],b[20];	<br/>
+	integer f1(integer a1,a2; string b1; integer &c1), f2();<br/> 
+	string t, q[10], f3(integer x); <br/>
+	integer swap(integer &x, &y);<br/>	 
+enddecl
+
+</p>
+
+
+
+
+<h3>Local Variables</h3>
+<p>
+Local variables can be declared anywhere inside a function definition except in the body of <b>if</b> and <b>while</b>. Local variables will have a function scope, i.e. it can only be accessed in the function in which it is declared. Arguments of a function are treated as local variables. Local variables can be integer or string. Arrays cannot be declared locally. All globally declared variables are visible inside a function, unless suppressed by a re-declaration. The general form of declarations is as follows:
+</p>
+<div class="syntax">
+type variable_name;
+</div>
+
+<h2>Function Definition and Main Function</h2>
+<p>
+Every APSIL program must have a <b>main()</b> function and zero or more user-defined functions. Every function other than the <b>main()</b> function must be declared within the <b>decl ... enddecl</b> block. The general form of a function definition is given below 
+</p>
+<div class="syntax">
+
+type function_name(ArgumentList)<br/>
+{ <br/>
+  Function Body<br/>
+}
+
+</div>
+<p>
+The function body must contain a return statement and the return value must be of the return type of the function. The arguments and return type of each function definition should match exactly with the corresponding declaration. Every declared function must have a definition. The signature of the function in the delcaration should match the definition of the function which includes the return type, and the names, passing mehtod and datatypes of the arguments. The language supports recursion and static scope rules apply.
+</p>
+
+
+
+<h3>main()</h3>
+<p>
+The <b>main()</b> function must be a zero argument function of type integer. Program execution begins from the body of the <b>main()</b> function. The <b>main()</b> function need not be declared. The <b>main()</b> function definition follows all user-defined function definitions.  The definition part of <b>main()</b> should be given in the same format as any other function.
+</b>
+
+
+<h2>Expressions</h2>
+<p>
+An expression specifies the computation of a value by applying operators and functions to operands. Function call in APSIL are treated as expressions, and the value of the expression is its return value. APSIL supports arithmetic and logical expressions
+</p>
+
+<h3>Arithmetic Expressions</h3>
+<p>
+Any integer value, variable, function returning an integer or 2 or more arithmetic expressions connected by arithmetic operators termed as arithmetic expressions. APSIL provides five arithmetic operators, viz., +, -, *, / (Integer Division) and % (Modulo operator) through which arithmetic expressions may be combined. Expression syntax and semantics are similar to standard practice in programming languages and normal rules of precedence, associativity and paranthesization hold. APSIL is strongly typed, and hence the types of the operands must match the operation. 
+</p>
+
+<h3>Logical Expressions</h3>
+<p>
+Logical expressions may be formed by combining arithmetic expressions using relational operators. The relational operators supported by APSIL are  &le;, &gt;, &le;=, &gt;=, ==, !=.
+</p>
+<p>
+Standard  meanings apply to these operators. The operators take two arithmetic expressions as operands and the result will be a boolean value, either of 1(true) or 0(false). Only realational operator that can be applied to two strings is == (to check equality). This also considered as a Logical expression. Logical expressions themselves may be combined using logical operators, && (logical and) ,  || (logical or) and ! (not).
+</p>
+
+
+<h3>Function Call</h3>
+<p>
+All functions except the <b>main()</b> function can be invoked from any other function including itself. The general form of a function call is:
+</p>
+<div class="syntax">
+function_name(value1,value1...);
+</div>
+<p>
+Function calls are treated as expressions. The function takes in the values of its arguments and returns a value of type equal to the return type of the function. This value is treated as the evaluated result of the function call.
+</p>
+
+
+<h2>Statements</h2>
+<p>
+Statements control the execution of the program. All statements in APSIL are terminated with a semicolon ;
+</p>
+
+<h3>Assignment Statement</h3>
+<p>
+The APSIL assignment statement assigns the value of an expression to a variable, or an indexed array of the same type or a string value to a string variable. <b>=</b> is known as the assignment operator. Initialization during declaration is not allowed in APSIL. The general syntax is as follows:
+</p>
+<div class="syntax">
+variable_name = string_value / array_variable / expression ;
+</div>
+
+
+
+
+
+<h3>If Statement</h3>
+<p>
+<b>If</b> statements specify the conditional execution of two branches according to the value of a boolean expression. If the expression evaluates to true, the <b>if</b> branch is executed, otherwise, if present, the <b>else</b>  branch is executed. The <b>else</b> part is optional. The general syntax is as follows:
+</p>
+<div class="syntax">
+
+if (logical expression) then  <br/>
+&nbsp;statements; <br/>
+else <br/>
+&nbsp;statements; <br/>
+endif; <br/>
+</div>
+
+
+<h3>While Statement</h3>
+<p>
+<b>While</b> statement iteratively executes a set of statements based on a condition which is a logical expression.  The statements are iteratively executed as long as the logical expression evaluates to true.
+</p>
+<div class="syntax">
+while (logical expression) do  <br/>
+&nbsp;statements; <br/>
+endwhile; <br/>
+</div>
+
+<h3>Break statement</h3>
+<p>
+<b>Break</b> statement is a statement which is used in a while loop block. This statement stops the execution of the loop in which it is used and passes the control of execution to the next statement after the loop. This statement cannot be used anywhere else other than while loop. The syntax is as follows:
+</p>
+<div class="syntax">
+break;
+</div>
+
+<h3>Continue statement</h3>
+<p>
+<b>Continue</b> statement is a statement which is also used only in a while loop block. This statement skips the current iteration of the loop and passes the control to the next iteration after checking the loop condition. The syntax is as follows:
+</p>
+<div class="syntax">
+continue;
+</div>
+
+
+<h3>Return statement</h3>
+<p>
+<b>Return</b> statement in a function passes the control from the callee to the caller function and returns a value to the caller function. All functions including the <b>main()</b> must have exactly one <b>return</b> statement and it should be the last statement in the funtion body. The return type of the function should match the type of the expression. The return type of main is integer. The syntax is as follows:
+</p>
+<div id="example">
+return expression;
+</div>
+
+<h3>Read/Write statements</h3>
+<p>
+The standard input and output statements in APSIL are <b>read</b> and <b>write</b> respectively. The read statement reads an integer value from the standard input device into an integer variable or an indexed array variable or a string value into a string variable. The write statement outputs a string literal or the value of string variable or an arithmetic expression  into the standard output.
+</p>
+<div class="syntax">
+read variable_name;<br/>
+
+write expression / string;
+</div>
+
+
+<h2>System Calls</h2>
+<p>
+System Calls allow the programs written in APSIL to interact with the operating system running on the ESIM architecture. 10 System Calls are supported by APSIL. 
+</p>
+
+
+
+<h3>Create</h3>
+<p>
+Creates a file with the specified filename in the filesystem. The return value of this system call is 0 in case of success and the appropriate error code in case of failure.
+</p>
+<div class="syntax">
+integer Create(string filename);
+</div>
+
+
+<h3>Open</h3>
+<p>
+Returns a file descriptor of the file in the filesystem with the specified filename. The file descriptor is an integer value. If the <b>Open</b> fails, an appropriate error code is returned.
+.</p>
+<div class="syntax">
+integer Open(string fileName);
+</div>
+
+
+<h3>Read</h3>
+<p>
+Reads the specified number of words(16 bytes) from a file which has the specified file descriptor into a string array. The return value of this system call is the number of words successfully read. If the <b>Read</b> fails, an appropriate error code is returned.
+</p>
+<div class="syntax">
+nteger Read(integer fileDescriptor, string buffer[], integer numWords);
+</div>
+
+<h3>Write</h3>
+<p>
+Writes the specified number of words from the string buffer to a file in the filesystem with the specified file descriptor. The return value of this system call is the number of words successfully written. If the <b>Write</b> fails, an appropriate error code is returned.
+</p>
+<div class="syntax">
+integer Write(integer fileDescriptor, string buffer[], integer numWords);
+</div>
+
+<h3>Seek</h3>
+<p>
+<b>Seek</b> is used to change the read/write head position in a file. It moves the head to the specified number of words from the beginning of the file. The return value of this system call is 0 in case of success and the appropriate error code in case of failure.
+</p>
+<div class="syntax">
+integer Seek(integer fileDescriptor, integer numWords);
+ </div>
+ 
+<h3>Close</h3>
+<p>
+This system call is used to close an open file. The return value of this system call is 0 in case of success and the appropriate error code in case of failure.
+</p>
+<div class="syntax">
+integer Close(integer fileDescriptor);
+</div>
+
+<h3>Delete</h3>
+<p>
+This system call is used to delete the file from the file system whose name is specified in the
+argument. The return value of this system call is 0 in case of success and the appropriate error code in case
+of failure.
+</p>
+<div class="syntax">
+integer Delete(string fileName);
+</div>
+
+
+<h3>Fork</h3>
+<p>
+This system call is used to create a copy of the current process in the system. The return value of this system call is the PID of the child process for the parent, and 0 for the child.
+</p>
+<div class="syntax">
+integer Fork();
+</div>
+
+
+
+<h3>Exec</h3>
+<p>
+This system call is used to load the program, whose name is specified in the argument, in the
+memory space of the current process and start its execution. The return value of this system call is 1 in case of failure.
+</p>
+<div class="syntax">
+integer Exec(string fileName);
+</div>
+
+
+
+<h3>Exit</h3>
+<p>
+This system call is used to terminate the execution of the process which invoked it and remove it from the memory.
+</p>
+<div class="syntax">
+void Exit();
+</div>
+
+<h3>Halt</h3>
+<p>
+This system call is used to halt the machine.
+</p>
+<div class="syntax">
+void Halt();
+</div>
+
+
+<div id="nav3"><div id="prev"><a href="./SPSIL.html">Prev</a></div>
+<div id="next"><a href="./Bibliography.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

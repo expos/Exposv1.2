@@ -1,0 +1,105 @@
+<!-- Latex References have been fixed-->
+
+<html>
+
+<head>
+<title> Introduction for Machine Specification</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+
+<body>
+
+
+<h1> Introduction for Machine Specification</h1>
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+
+
+<div id="main">
+<h2> Introduction </h2>
+
+	<p>
+	A detailed operating system specification was done in the work of [KAG+11]. This documentation was critically reviewed and modifications were done in many places to comply with our new design.
+	The major modifications done are the following:
+	<ol>
+	<li> Addition of 8 Kernel registers and 4 Temporary registers.
+
+	<li> The ready queue data structure in the previous design was replaced with a ready list data structure for simplicity in design and implementation.
+
+	<li> The maximum number of processes supported by the Operating System was reduced to 12 from 16 due to space constraints in memory.
+
+	<li> Interrupt specifications were modified due to the size constratits of interrupt code.
+
+	<li> The memory layout was modified to incorporate the new design decisions.
+	</ol>
+	</p>
+
+<h2>Brief Machine Description</h2>
+
+	<p>The machine simulator is known as Extended Simple Integer Machine (ESIM).
+	It is an interrupt driven uniprocessor machine.
+	<div id="imageCaption">
+	<img src="images/components_machine.png" alt="Components of Machine">
+	<br/>
+	</div>
+	The various components of the machine are :
+	<ol>
+		<li> <b>Disk</b> It is a non-volatile storage that stores user programs (executables) and data files.
+		<li> <b>Memory</b> It is a volatile storage that stores the programs to be run on the machine as well as the operating system that manages the various programs.
+		<li> <b>Processor</b> It is the main computational unit that is used to execute the instructions.
+		<li> <b>Timer</b> It is a device that interrupts the processor after a pre-defined specific time interval.
+		<li> <b>Load/Store</b> It is a macro that performs the functionalities of <em>DMA controller</em>
+	</ol>
+	</p>
+<h2>Data types</h2>
+	<p>
+	The fundamental types supported by the machine are <i>integer</i> and <i>string</i>.
+	A string is a sequence of characters terminated by '\0'. The machine interprets a single character also as a string.
+	<p>
+		The character 's' is stored as "s\0" in the memory and the word "ESIM" is stored as "ESIM\0" in the memory.
+	</p>
+	ESIM supports a maximum string length of <em>16</em>.
+	</p>
+<div id="nav3">
+<div id="prev"><a href="./index.html">Prev</a></div>
+<div id="next"><a href="./Registers.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

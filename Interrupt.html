@@ -1,0 +1,141 @@
+<!--Latex References Fixed -->
+
+<html>
+<head>
+<title>Interrupt</title>
+<link rel="stylesheet" type="text/css" href="./main.css"/>
+</head>
+<body>
+<h1>Interrupts</h1>
+
+
+<div id="nav">
+<div id="nav1">
+<ul>
+<li><a href="index.html">Home</a>
+<li><a href="MachineSpecIntro.html">Machine Specification(Intro)</a>
+<li><a href="Registers.html">Registers</a>
+<li><a href="Memory.html">Memory</a>
+<li><a href="Process.html">Process</a>
+<li><a href="Instructions.html">Instructions</a>
+<li><a href="Interrupt.html">Interrupt</a>
+<li><a href="FileSystem.html">File System</a>
+<li><a href="OSIntroduction.html">OS Introduction</a>
+<li><a href="OSStartupCode.html">OS Startup Code</a>
+<li><a href="Halt.html">Halt</a>
+<li><a href="FileSystemCalls.html">File System Call</a>
+<li><a href="Multiprogramming.html">Multi-Programming</a>
+<li><a href="ProcessSystemCall.html">Process System Call</a>
+<li><a href="Conclusion.html">Conclusion</a>
+<li><a href="SPSIL.html">SPSIL</a>
+<li><a href="APSIL.html">APSIL</a>
+<li><a href="Bibliography.html">Bibliography</a>
+</ul>
+</div>
+
+
+<div id="nav2">
+<p class="nav2">
+Download as pdf
+</p>
+<ul>
+<li><a href="">Machine Spec</a>
+<li><a href="">APSIL</a>
+<li><a href="">SPSIL</a>
+</ul>
+</div>
+</div>
+
+
+
+<div id="main">
+<h2>Introduction</h2>
+	<p>
+	Interrupts are mechanisms by which the user code interrupts the execution of the processor and passes control to the kernel to accomplish low level functionalities like disk access, arithmetic exception handling etc.
+	</p>
+	<p>
+	<b>Interrupt Service Routine(ISR): </b> The kernel provides routines to accomplish the functionality for which an interrupt has been generated. These routines are known as Interrupt Service Routines.
+
+	<div><b>Note:</b> Every ISR should end with an IRET instruction.</div>
+	</p>
+<h2>The <tt>INT</tt> instruction</h2>
+	<p>
+	The instruction used to generate an interrupt is <tt>INT</tt>.</p>
+	<div>Syntax :<tt>INT</tt> <em>n</em> 
+	<p>
+	The INT instruction passes control to the Interrupt Service Routine (ISR) for this interrupt located at the physical address 
+	computed using the value n.
+	</p>
+	<p>
+	Address computation is done as follows. 
+	The physical address of the ISR corresponding to interrupt number n is given by:
+	<div> 
+	Physical Address = (56+n) x Page Size
+	</div>
+	</p>
+	<p>
+	The following figure summarises the physical address to which the control is transferred for each interrupt. Note that the interrupts are disabled once this instruction is executed, since we do not allow interrupts to occur in kernel mode.
+	</p>
+	<div id="imageCaption">
+	<img src="images/interrupt_table.png"><br/>
+	Interrupts and their locations in the memory</div>
+
+
+<h2>Types of Interrupts</h2>
+	<p>
+	There are 8 interrupts (numbered from 0 to 7) supported by the ESIM architecture. The interrupts 0 is a hardware interrupts and the remaining interrupts (1 to 7) are software interrupts.
+	</p>
+	<p>
+	Details of the <em>hardware interrupt</em> is as follows.
+
+	<ul>
+<a name="INT">
+		<li><tt>INT 0 :</tt> This is the timer interrupt which interrupts the processor forcing a context switch. It contains the code for the scheduler of the operating system, which schedules the CPU time among the various active processes. Note that this interrupt is machine generated and cannot be called.
+
+		<p>Details of <em>software interrupts</em> are as follows.</p>
+		<ul>
+		<li><tt>INT 1--4:</tt> These interrupts are used for the various file system calls.
+		<li><tt>INT 5--7:</tt> These interrupts are used for the various process system calls.
+		</ul>
+	</ul>
+	The interrupts 1--7  are unprivileged and can be called from user mode.
+	</p>
+
+<h2>Calling Convention</h2>
+	<p>
+	In this section, we explain the calling and returning conventions for interrupts.
+	</p>
+	<h3>Calling Convention</h3>
+		<p>
+		Before switching the control to the ISR using the INT instruction the user program does the following:
+		<ol>
+			<li> Push a dummy value for storing the return value of the interrupt onto the stack.
+			<li> Push the arguments to the interrupt.
+			<li> Make the Interrupt call using the INT instruction.
+		</ol>
+		</p>
+		<p>
+		The INT instruction pushes the IP+1 value on to the stack and then starts the execution of the corresponding ISR. When the ISR finishes its execution, IRET instruction is called. This IRET instruction pops the IP+1 value from the stack top into the IP register and the execution of the user program is resumed from the point where it was interrupted.
+		</p>
+
+	<h3>Returning Convention</h3>
+		<p>
+		After returning from the ISR using the IRET instruction the user program does the following:
+		<ol>
+			<li> Pop out the arguments from the stack.
+			<li> Pop out the return value.
+		</ol>
+		</p>
+	<p>
+	The following figure explains the state of the stack at various stages.
+	</p>
+	<div id="imageCaption">
+	<img src="./images/calling_convention.png" alt="Calling Convention"><br/>
+	Recommended calling and returning convention for interrupts</div>
+
+<div id="nav3"><div id="prev"><a href="./Instructions.html">Prev</a></div>
+<div id="next"><a href="./FileSystem.html">Next</a></div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+decl
+	integer factorial(integer n);
+enddecl
+integer factorial (integer n) {
+	integer rvalue;
+	if (n==1) then
+		rvalue = 1;
+	else
+		rvalue = n * factorial (n-1);
+	endif;
+	return rvalue; // Note only one RETURN statement is allowed.
+}
+integer main( ){ // Main definition should always begin like this
+	integer n,i ;
+	read (n);
+	i = 1;
+	while ( i <= n) do
+		write ( factorial(i));
+		i = i + 1;
+	endwhile;
+	return 1; // Any integer value may be returned
+}

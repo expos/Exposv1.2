@@ -1,0 +1,30 @@
+decl
+	integer a,b;
+	string x,y;
+enddecl
+integer main(){
+	integer c;
+	string z;
+	read(a);
+	b=5;
+	c=x;
+	read(x);
+	y="hello";
+	if(a==b ) then 
+		write("a>b");
+	else
+		write("else a>b");
+	endif;
+	if(a==b && b==c) then 
+		write("a>b && b<c");
+	else
+		write("else a>b && b<c");
+	endif;
+	if(!(a>=b) || x==y) then 
+		write("!(a>=b) || x==y");
+	else
+		write("else !(a>=b) || x==y");
+	endif;
+	return 0;
+}
+

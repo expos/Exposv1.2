@@ -1,0 +1,15 @@
+decl
+	string f(string x);
+enddecl
+string f(string x)
+{
+	x="hello";
+	return x;
+}
+integer main()
+{
+	string y;
+	read(y);
+	write(f(y));
+	return 0;	
+}
